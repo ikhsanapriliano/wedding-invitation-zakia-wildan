@@ -31,7 +31,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -195,12 +195,10 @@ export default function App() {
                       ease: [0.43, 0.13, 0.23, 0.96],
                     }}
                     className="absolute inset-0 z-40 flex flex-col items-center justify-between p-8 text-center overflow-hidden"
-                    style={{
-                      backgroundImage: "url('/images/depan.jpg')",
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
                   >
+                    {/* Responsive background: mobile below md, desktop md and above */}
+                    <div className="absolute inset-0 z-0 bg-cover bg-center block md:hidden" style={{ backgroundImage: "url('/images/mobile-bg.png')" }} />
+                    <div className="absolute inset-0 z-0 bg-cover bg-center hidden md:block" style={{ backgroundImage: "url('/images/depan.jpg')" }} />
                     {/* Dark premium overlay for readability & elegant contrast */}
                     <div className="absolute inset-0 bg-stone-950/50 backdrop-blur-[0.5px] pointer-events-none z-0" />
 
@@ -570,7 +568,7 @@ export default function App() {
                       >
                         <iframe
                           title="Kampung Bareto Location Map"
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.025732104381!2d107.65345717441584!3d-6.887532393111458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e7b993358369%3A0xc3c5b525db86903e!2sKampung%20Bareto!5e0!3m2!1sid!2sid!4v1720050000000!5m2!1sid!2sid"
+                          src="https://www.google.com/maps?q=-6.8722476,107.6649893&z=17&output=embed"
                           width="100%"
                           height="100%"
                           style={{ border: 0 }}
@@ -582,7 +580,7 @@ export default function App() {
 
                       <a
                         id="gmaps-nav-link"
-                        href="https://maps.app.goo.gl/YfS9W28jZ35K4hV7A"
+                        href="https://www.google.com/maps/place/Kampung+Bareto+Venue+%26+Villa/@-6.8722476,107.662409,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68e763a0d6b01d:0x3ecc7d93b26a2f1d!8m2!3d-6.8722476!4d107.6649893!16s%2Fg%2F11b6j05zjz?entry=ttu&g_ep=EgoyMDI2MDcxNC4wIKXMDSoASAFQAw%3D%3D"
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 bg-theory-red hover:bg-theory-maroon text-white text-xs font-semibold uppercase tracking-wider py-3 px-6 rounded-xl shadow-md transition-all"

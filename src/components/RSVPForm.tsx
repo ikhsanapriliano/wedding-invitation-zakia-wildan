@@ -99,9 +99,9 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
         submittedRsvp.attendance === "hadir"
           ? `HADIR (Membawa ${submittedRsvp.guestsCount} Orang)`
           : "TIDAK HADIR"
-      }* di acara pernikahan bahagia kalian.\n\nID RSVP saya: *${submittedRsvp.id}*\n\nTunjukkan QR Code berikut saat tiba di lokasi untuk verifikasi kehadiran cepat.\n\nSampai jumpa di Kampung Bareto! 🌸`,
+      }* di acara pernikahan bahagia kalian.\n\nID RSVP saya: *${submittedRsvp.id}*\n\nSampai jumpa di Kampung Bareto! 🌸`,
     );
-    return `https://api.whatsapp.com/send?text=${waText}`;
+    return `https://api.whatsapp.com/send?text=${waText}&phone=62895321469740`;
   };
 
   return (
@@ -268,32 +268,6 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
                 buku tamu digital real-time kami.
               </p>
             </div>
-
-            {/* QR Code Segment */}
-            {submittedRsvp.attendance === "hadir" && (
-              <div
-                id="rsvp-qrcode-box"
-                className="bg-white border border-theory-clay/20 p-4 rounded-2xl inline-block shadow-sm"
-              >
-                <div className="flex justify-center mb-2 bg-stone-50 p-2 rounded-lg">
-                  <QRCodeSVG
-                    value={submittedRsvp.id}
-                    size={130}
-                    bgColor={"#ffffff"}
-                    fgColor={"#261414"}
-                    level={"H"}
-                    includeMargin={false}
-                  />
-                </div>
-                <span className="text-[10px] font-mono tracking-widest text-theory-clay uppercase font-bold">
-                  ID: {submittedRsvp.id}
-                </span>
-                <p className="text-[9px] text-theory-red font-sans mt-2 max-w-[180px] mx-auto leading-tight font-bold">
-                  Tunjukkan QR Code ini di meja penerima tamu Kampung Bareto
-                  untuk verifikasi kehadiran.
-                </p>
-              </div>
-            )}
 
             {/* WhatsApp Direct Action Button */}
             <div className="pt-2">

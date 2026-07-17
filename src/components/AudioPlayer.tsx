@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
-import { motion } from 'motion/react';
+import React, { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX, Music } from "lucide-react";
+import { motion } from "motion/react";
 
 interface AudioPlayerProps {
   playOnStart: boolean;
@@ -17,14 +17,17 @@ export default function AudioPlayer({ playOnStart }: AudioPlayerProps) {
     // Lazy initialize audio
     if (!audioRef.current) {
       audioRef.current = new Audio(audioUrl);
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.4; // Soft volume
+      audioRef.current.loop = false;
+      audioRef.current.volume = 0.2; // Soft volume
     }
 
     if (playOnStart) {
-      audioRef.current.play()
+      audioRef.current
+        .play()
         .then(() => setIsPlaying(true))
-        .catch(err => console.log("Audio autoplay waiting for user interaction:", err));
+        .catch((err) =>
+          console.log("Audio autoplay waiting for user interaction:", err),
+        );
     }
 
     return () => {
@@ -40,9 +43,10 @@ export default function AudioPlayer({ playOnStart }: AudioPlayerProps) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play()
+      audioRef.current
+        .play()
         .then(() => setIsPlaying(true))
-        .catch(err => console.error("Error playing audio:", err));
+        .catch((err) => console.error("Error playing audio:", err));
     }
   };
 
@@ -54,7 +58,11 @@ export default function AudioPlayer({ playOnStart }: AudioPlayerProps) {
         className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-900/95 text-stone-100 shadow-xl backdrop-blur-sm hover:bg-stone-800 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
         whileTap={{ scale: 0.9 }}
         animate={isPlaying ? { rotate: 360 } : {}}
-        transition={isPlaying ? { repeat: Infinity, duration: 12, ease: "linear" } : { duration: 0.2 }}
+        transition={
+          isPlaying
+            ? { repeat: Infinity, duration: 12, ease: "linear" }
+            : { duration: 0.2 }
+        }
       >
         {isPlaying ? (
           <div className="relative flex items-center justify-center">
