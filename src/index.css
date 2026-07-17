@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Caveat:wght@400;500;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Embolism Spark';
+  src: url('/fonts/Embolism-Spark.woff2') format('woff2'),
+       url('/fonts/Embolism-Spark.woff') format('woff'),
+       url('/fonts/Embolism-Spark.ttf') format('truetype'),
+       url('/fonts/Embolism-Spark.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sunsets Heal Souls';
+  src: url('/fonts/Sunsets-Heal-Souls.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Simple Think Regular';
+  src: url('/fonts/Simple-Think-Regular.woff2') format('woff2'),
+       url('/fonts/Simple-Think-Regular.woff') format('woff'),
+       url('/fonts/Simple-Think-Regular.ttf') format('truetype'),
+       url('/fonts/Simple-Think-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-serif: "Embolism Spark", "Sunsets Heal Souls", "Playfair Display", Georgia, serif;
+  --font-script: "Simple Think Regular", "Caveat", "Alex Brush", cursive;
+  --font-sans: "Inter", sans-serif;
+  
+  --color-theory-red: #9C0C0C;
+  --color-theory-clay: #A66B6B;
+  --color-theory-espresso: #261414;
+  --color-theory-cream: #F2ECE9;
+  --color-theory-maroon: #5C1313;
+  --color-theory-bg: #FCFAF6;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f5f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}
