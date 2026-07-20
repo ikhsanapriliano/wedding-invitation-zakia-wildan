@@ -26,6 +26,8 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Tamu Kehormatan");
+  const [guestPhone, setGuestPhone] = useState("");
+  const [guestId, setGuestId] = useState("");
   const [audioStarted, setAudioStarted] = useState(false);
 
   useEffect(() => {
@@ -40,6 +42,14 @@ export default function HomePage() {
     const toParam = params.get("to") || params.get("nama");
     if (toParam) {
       setGuestName(toParam);
+    }
+    const phoneParam = params.get("phone");
+    if (phoneParam) {
+      setGuestPhone(phoneParam);
+    }
+    const idParam = params.get("id");
+    if (idParam) {
+      setGuestId(idParam);
     }
   }, []);
 
@@ -536,7 +546,11 @@ export default function HomePage() {
               </div>
 
               <div className="py-16 bg-white">
-                <RSVPForm guestNameFromUrl={guestName} />
+                <RSVPForm
+                  guestNameFromUrl={guestName}
+                  phoneFromUrl={guestPhone}
+                  idFromUrl={guestId}
+                />
               </div>
 
               <div className="bg-[#FAF7F1] py-16 border-y border-stone-200/30">
