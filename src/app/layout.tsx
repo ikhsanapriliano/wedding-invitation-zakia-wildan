@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     locale: "id_ID",
     images: [
       {
-        url: "/images/og-image.png",
+        url: "/images/og-image-300.png",
         width: 1200,
         height: 630,
         alt: "Zakia & Wildan Wedding Invitation",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Wedding Invitation Zakia & Wildan",
     description: "Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026",
-    images: ["/images/og-image.png"],
+    images: ["/images/og-image-300.png"],
   },
 
   other: {
