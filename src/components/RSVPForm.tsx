@@ -21,7 +21,6 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
     "hadir",
   );
   const [guestsCount, setGuestsCount] = useState<number>(1);
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRsvp, setSubmittedRsvp] = useState<any | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -30,10 +29,6 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
     e.preventDefault();
     if (!name.trim()) {
       setErrorMsg("Mohon masukkan nama Anda.");
-      return;
-    }
-    if (!phoneNumber.trim()) {
-      setErrorMsg("Mohon masukkan nomor WhatsApp Anda.");
       return;
     }
 
@@ -48,7 +43,6 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
       name: name.trim(),
       attendance,
       guests_count: attendance === "hadir" ? Number(guestsCount) : 0,
-      phone_number: phoneNumber.trim(),
       created_at: new Date().toISOString(),
       checked_in: false,
       check_in_time: null,
@@ -133,24 +127,8 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
                   type="text"
                   required
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Masukkan nama lengkap Anda"
-                  className="w-full px-4 py-3 bg-[#FCFAF6] border border-theory-clay/20 rounded-xl text-theory-espresso text-sm font-medium focus:outline-none focus:ring-1 focus:ring-theory-red/40 focus:border-theory-red"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-sans text-theory-clay mb-1 tracking-wider uppercase font-bold">
-                  Nomor WhatsApp / Telp
-                </label>
-                <input
-                  id="rsvp-input-phone"
-                  type="tel"
-                  required
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="Contoh: 08123456789"
-                  className="w-full px-4 py-3 bg-[#FCFAF6] border border-theory-clay/20 rounded-xl text-theory-espresso text-sm font-medium focus:outline-none focus:ring-1 focus:ring-theory-red/40 focus:border-theory-red"
+                  disabled
+                  className="w-full px-4 py-3 bg-[#FCFAF6] border border-theory-clay/20 rounded-xl text-theory-espresso text-sm font-medium focus:outline-none focus:ring-1 focus:ring-theory-red/40 focus:border-theory-red opacity-70 cursor-not-allowed"
                 />
               </div>
 
