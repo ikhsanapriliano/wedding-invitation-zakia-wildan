@@ -21,6 +21,7 @@ import {
   Plus,
   MessageCircle,
   Eye,
+  EyeOff,
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -32,6 +33,7 @@ export default function AdminDashboard() {
   });
   const [passcode, setPasscode] = useState("");
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [rsvps, setRsvps] = useState<RSVP[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [checkInIdInput, setCheckInIdInput] = useState("");
@@ -328,20 +330,33 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <form onSubmit={handlePasscodeLogin} className="space-y-4">
+              <form onSubmit={handlePasscodeLogin} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Kode Akses
                 </label>
-                <input
-                  id="admin-passcode-input"
-                  type="password"
-                  required
-                  placeholder="Masukkan kode akses"
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+                <div className="relative">
+                  <input
+                    id="admin-passcode-input"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    placeholder="Masukkan kode akses"
+                    value={passcode}
+                    onChange={(e) => setPasscode(e.target.value)}
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
 
               <button

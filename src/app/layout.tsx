@@ -1,30 +1,37 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import "./globals.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datangya.invit.id';
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  "https://wedding-invitation-zakia-wildan.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: 'Wedding Invitation Zakia & Wildan',
-  description: 'Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026',
+  title: "Wedding Invitation Zakia & Wildan",
+  description: "Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026",
+
   openGraph: {
-    title: 'Wedding Invitation Zakia & Wildan',
-    description: 'Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026',
-    type: 'website',
+    title: "Wedding Invitation Zakia & Wildan",
+    description: "Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026",
+    url: baseUrl,
+    siteName: "Wedding Invitation",
+    type: "website",
+    locale: "id_ID",
     images: [
       {
-        url: '/images/depan.jpg',
+        url: "/images/depan.jpg",
         width: 1200,
         height: 630,
-        alt: 'Zakia & Wildan Wedding Invitation',
+        alt: "Zakia & Wildan Wedding Invitation",
       },
     ],
   },
+
   twitter: {
-    card: 'summary_large_image',
-    title: 'Wedding Invitation Zakia & Wildan',
-    description: 'Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026',
-    images: ['/images/depan.jpg'],
+    card: "summary_large_image",
+    title: "Wedding Invitation Zakia & Wildan",
+    description: "Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026",
+    images: ["/images/depan.jpg"],
   },
 };
 
