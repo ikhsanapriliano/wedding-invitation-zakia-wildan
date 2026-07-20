@@ -61,7 +61,7 @@ export default function AudioPlayer({ playOnStart }: AudioPlayerProps) {
         transition={
           isPlaying
             ? { repeat: Infinity, duration: 12, ease: "linear" }
-            : { duration: 0.2 }
+            : { duration: 2 }
         }
       >
         {isPlaying ? (

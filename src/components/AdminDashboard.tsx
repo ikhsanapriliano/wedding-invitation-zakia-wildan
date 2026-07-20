@@ -1,19 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { collection, query, orderBy, onSnapshot, doc, updateDoc, serverTimestamp, deleteDoc } from 'firebase/firestore';
-import { db, auth, googleProvider, handleFirestoreError, OperationType } from '../firebase';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { RSVP } from '../types';
-import { Users, UserCheck, UserX, AlertCircle, LogOut, CheckCircle2, ShieldCheck, QrCode, Search, Trash2, CalendarCheck, HelpCircle } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  updateDoc,
+  serverTimestamp,
+  deleteDoc,
+} from "firebase/firestore";
+import {
+  db,
+  auth,
+  googleProvider,
+  handleFirestoreError,
+  OperationType,
+} from "../firebase";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { RSVP } from "../types";
+import {
+  Users,
+  UserCheck,
+  UserX,
+  AlertCircle,
+  LogOut,
+  CheckCircle2,
+  ShieldCheck,
+  QrCode,
+  Search,
+  Trash2,
+  CalendarCheck,
+  HelpCircle,
+} from "lucide-react";
 
 export default function AdminDashboard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [passcode, setPasscode] = useState('');
+  const [passcode, setPasscode] = useState("");
   const [loginError, setLoginError] = useState<string | null>(null);
   const [rsvps, setRsvps] = useState<RSVP[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [checkInIdInput, setCheckInIdInput] = useState('');
-  const [checkInMessage, setCheckInMessage] = useState<{ status: 'success' | 'error', text: string } | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [checkInIdInput, setCheckInIdInput] = useState("");
+  const [checkInMessage, setCheckInMessage] = useState<{
+    status: "success" | "error";
+    text: string;
+  } | null>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   // Default backup passcode matching the wedding date "010826" or "10826" (1 August 2026)
@@ -35,27 +66,34 @@ export default function AdminDashboard() {
     if (!isLoggedIn) return;
 
     // Real-time synchronization for guest RSVPs
-    const rsvpQuery = query(collection(db, 'rsvps'), orderBy('createdAt', 'desc'));
-    const unsubscribeRsvps = onSnapshot(rsvpQuery, (snapshot) => {
-      const rsvpList: RSVP[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        rsvpList.push({
-          id: doc.id,
-          name: data.name,
-          attendance: data.attendance,
-          guestsCount: data.guestsCount,
-          phoneNumber: data.phoneNumber,
-          createdAt: data.createdAt?.toDate() || new Date(),
-          checkedIn: data.checkedIn || false,
-          checkInTime: data.checkInTime?.toDate() || null
+    const rsvpQuery = query(
+      collection(db, "rsvps"),
+      orderBy("createdAt", "desc"),
+    );
+    const unsubscribeRsvps = onSnapshot(
+      rsvpQuery,
+      (snapshot) => {
+        const rsvpList: RSVP[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          rsvpList.push({
+            id: doc.id,
+            name: data.name,
+            attendance: data.attendance,
+            guestsCount: data.guestsCount,
+            phoneNumber: data.phoneNumber,
+            createdAt: data.createdAt?.toDate() || new Date(),
+            checkedIn: data.checkedIn || false,
+            checkInTime: data.checkInTime?.toDate() || null,
+          });
         });
-      });
-      setRsvps(rsvpList);
-    }, (error) => {
-      console.error(error);
-      // Fallback or handle
-    });
+        setRsvps(rsvpList);
+      },
+      (error) => {
+        console.error(error);
+        // Fallback or handle
+      },
+    );
 
     return () => unsubscribeRsvps();
   }, [isLoggedIn]);
@@ -66,7 +104,9 @@ export default function AdminDashboard() {
       setIsLoggedIn(true);
       setLoginError(null);
     } else {
-      setLoginError("Passcode salah! Silakan masukkan kode tanggal pernikahan (10826).");
+      setLoginError(
+        "Passcode salah! Silakan masukkan kode tanggal pernikahan (10826).",
+      );
     }
   };
 
@@ -77,18 +117,22 @@ export default function AdminDashboard() {
         setIsLoggedIn(true);
         setLoginError(null);
       } else {
-        setLoginError("Hanya email wildandamang@gmail.com yang diizinkan untuk masuk sebagai admin.");
+        setLoginError(
+          "Hanya email wildandamang@gmail.com yang diizinkan untuk masuk sebagai admin.",
+        );
         await signOut(auth);
       }
     } catch (error) {
-      setLoginError("Login Google gagal. Silakan gunakan Kode Akses Cepat di bawah.");
+      setLoginError(
+        "Login Google gagal. Silakan gunakan Kode Akses Cepat di bawah.",
+      );
     }
   };
 
   const handleLogout = async () => {
     await signOut(auth);
     setIsLoggedIn(false);
-    setPasscode('');
+    setPasscode("");
     setCurrentUser(null);
   };
 
@@ -97,43 +141,54 @@ export default function AdminDashboard() {
     const cleanId = idToVerify.trim().toUpperCase();
     if (!cleanId) return;
 
-    const targetRsvp = rsvps.find(r => r.id === cleanId || r.id?.toUpperCase() === cleanId);
+    const targetRsvp = rsvps.find(
+      (r) => r.id === cleanId || r.id?.toUpperCase() === cleanId,
+    );
 
     if (!targetRsvp) {
-      setCheckInMessage({ status: 'error', text: `Data RSVP dengan ID "${cleanId}" tidak ditemukan.` });
+      setCheckInMessage({
+        status: "error",
+        text: `Data RSVP dengan ID "${cleanId}" tidak ditemukan.`,
+      });
       return;
     }
 
     if (targetRsvp.checkedIn) {
       setCheckInMessage({
-        status: 'error',
-        text: `Tamu "${targetRsvp.name}" sudah melakukan check-in pada pukul ${new Date(targetRsvp.checkInTime).toLocaleTimeString('id-ID')}.`
+        status: "error",
+        text: `Tamu "${targetRsvp.name}" sudah melakukan check-in pada pukul ${new Date(targetRsvp.checkInTime).toLocaleTimeString("id-ID")}.`,
       });
       return;
     }
 
     try {
-      const rsvpDocRef = doc(db, 'rsvps', targetRsvp.id!);
+      const rsvpDocRef = doc(db, "rsvps", targetRsvp.id!);
       await updateDoc(rsvpDocRef, {
         checkedIn: true,
-        checkInTime: serverTimestamp()
+        checkInTime: serverTimestamp(),
       });
 
       setCheckInMessage({
-        status: 'success',
-        text: `Berhasil! "${targetRsvp.name}" (${targetRsvp.guestsCount} Pax) terverifikasi & berhasil masuk.`
+        status: "success",
+        text: `Berhasil! "${targetRsvp.name}" (${targetRsvp.guestsCount} Pax) terverifikasi & berhasil masuk.`,
       });
-      setCheckInIdInput('');
+      setCheckInIdInput("");
     } catch (err) {
-      setCheckInMessage({ status: 'error', text: "Gagal memproses check-in. Hubungi admin database." });
+      setCheckInMessage({
+        status: "error",
+        text: "Gagal memproses check-in. Hubungi admin database.",
+      });
       handleFirestoreError(err, OperationType.UPDATE, `rsvps/${targetRsvp.id}`);
     }
   };
 
   const handleDeleteRsvp = async (id: string, name: string) => {
-    if (!window.confirm(`Apakah Anda yakin ingin menghapus RSVP dari "${name}"?`)) return;
+    if (
+      !window.confirm(`Apakah Anda yakin ingin menghapus RSVP dari "${name}"?`)
+    )
+      return;
     try {
-      await deleteDoc(doc(db, 'rsvps', id));
+      await deleteDoc(doc(db, "rsvps", id));
     } catch (err) {
       console.error(err);
       handleFirestoreError(err, OperationType.DELETE, `rsvps/${id}`);
@@ -142,19 +197,30 @@ export default function AdminDashboard() {
 
   // Compute stats
   const totalRsvps = rsvps.length;
-  const totalAttendingDocs = rsvps.filter(r => r.attendance === 'hadir').length;
-  const totalNotAttendingDocs = rsvps.filter(r => r.attendance === 'tidak_hadir').length;
-  const totalCheckedIn = rsvps.filter(r => r.checkedIn).length;
-  const totalPax = rsvps.reduce((acc, curr) => acc + (curr.attendance === 'hadir' ? curr.guestsCount : 0), 0);
+  const totalAttendingDocs = rsvps.filter(
+    (r) => r.attendance === "hadir",
+  ).length;
+  const totalNotAttendingDocs = rsvps.filter(
+    (r) => r.attendance === "tidak_hadir",
+  ).length;
+  const totalCheckedIn = rsvps.filter((r) => r.checkedIn).length;
+  const totalPax = rsvps.reduce(
+    (acc, curr) => acc + (curr.attendance === "hadir" ? curr.guestsCount : 0),
+    0,
+  );
 
-  const filteredRsvps = rsvps.filter(r =>
-    r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    r.id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    r.phoneNumber.includes(searchQuery)
+  const filteredRsvps = rsvps.filter(
+    (r) =>
+      r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.phoneNumber.includes(searchQuery),
   );
 
   return (
-    <div id="admin-root" className="px-4 py-8 max-w-lg mx-auto bg-stone-100 min-h-screen">
+    <div
+      id="admin-root"
+      className="px-4 py-8 max-w-lg mx-auto bg-stone-100 min-h-screen"
+    >
       <AnimatePresence mode="wait">
         {!isLoggedIn ? (
           <motion.div
@@ -177,7 +243,10 @@ export default function AdminDashboard() {
             </div>
 
             {loginError && (
-              <div id="login-error" className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-100 text-center flex items-center gap-1.5 justify-center">
+              <div
+                id="login-error"
+                className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-100 text-center flex items-center gap-1.5 justify-center"
+              >
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 <span>{loginError}</span>
               </div>
@@ -211,7 +280,9 @@ export default function AdminDashboard() {
 
             <div className="relative flex py-1 items-center">
               <div className="flex-grow border-t border-stone-200"></div>
-              <span className="flex-shrink mx-3 text-[10px] text-stone-400 font-sans uppercase tracking-widest">ATAU</span>
+              <span className="flex-shrink mx-3 text-[10px] text-stone-400 font-sans uppercase tracking-widest">
+                ATAU
+              </span>
               <div className="flex-grow border-t border-stone-200"></div>
             </div>
 
@@ -241,7 +312,7 @@ export default function AdminDashboard() {
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
                 <span className="text-xs font-serif font-bold text-stone-800 tracking-wide">
-                  Wildan & Zakia Admin
+                  Zakia & Wildan Admin
                 </span>
               </div>
               <button
@@ -263,7 +334,8 @@ export default function AdminDashboard() {
                 </h3>
               </div>
               <p className="text-[10px] text-stone-400 font-sans leading-normal">
-                Ketik atau paste ID RSVP unik dari undangan tamu untuk memverifikasi kedatangan di lokasi acara secara langsung.
+                Ketik atau paste ID RSVP unik dari undangan tamu untuk
+                memverifikasi kedatangan di lokasi acara secara langsung.
               </p>
 
               <div className="flex gap-2">
@@ -288,9 +360,9 @@ export default function AdminDashboard() {
                 <div
                   id="admin-scan-msg"
                   className={`p-3 rounded-xl text-xs border ${
-                    checkInMessage.status === 'success'
-                      ? 'bg-emerald-950/80 border-emerald-500/30 text-emerald-300'
-                      : 'bg-red-950/80 border-red-500/30 text-red-300'
+                    checkInMessage.status === "success"
+                      ? "bg-emerald-950/80 border-emerald-500/30 text-emerald-300"
+                      : "bg-red-950/80 border-red-500/30 text-red-300"
                   }`}
                 >
                   {checkInMessage.text}
@@ -305,8 +377,12 @@ export default function AdminDashboard() {
                   <Users className="h-5 w-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">Total RSVP</span>
-                  <span className="text-xl font-bold font-serif text-stone-800">{totalRsvps}</span>
+                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">
+                    Total RSVP
+                  </span>
+                  <span className="text-xl font-bold font-serif text-stone-800">
+                    {totalRsvps}
+                  </span>
                 </div>
               </div>
 
@@ -315,8 +391,12 @@ export default function AdminDashboard() {
                   <UserCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">Hadir (Pax)</span>
-                  <span className="text-xl font-bold font-serif text-emerald-800">{totalAttendingDocs} ({totalPax})</span>
+                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">
+                    Hadir (Pax)
+                  </span>
+                  <span className="text-xl font-bold font-serif text-emerald-800">
+                    {totalAttendingDocs} ({totalPax})
+                  </span>
                 </div>
               </div>
 
@@ -325,8 +405,12 @@ export default function AdminDashboard() {
                   <UserX className="h-5 w-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">Tidak Hadir</span>
-                  <span className="text-xl font-bold font-serif text-red-800">{totalNotAttendingDocs}</span>
+                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">
+                    Tidak Hadir
+                  </span>
+                  <span className="text-xl font-bold font-serif text-red-800">
+                    {totalNotAttendingDocs}
+                  </span>
                 </div>
               </div>
 
@@ -335,8 +419,12 @@ export default function AdminDashboard() {
                   <CalendarCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">Checked In</span>
-                  <span className="text-xl font-bold font-serif text-amber-800">{totalCheckedIn}</span>
+                  <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider block">
+                    Checked In
+                  </span>
+                  <span className="text-xl font-bold font-serif text-amber-800">
+                    {totalCheckedIn}
+                  </span>
                 </div>
               </div>
             </div>
@@ -398,24 +486,30 @@ export default function AdminDashboard() {
 
                       <div className="flex justify-between items-center text-[10px] pt-1 border-t border-stone-100">
                         <div className="flex gap-2">
-                          <span className={`px-2 py-0.5 rounded-full font-medium ${
-                            rsvp.attendance === 'hadir'
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
-                              : 'bg-red-50 text-red-700 border border-red-100'
-                          }`}>
-                            {rsvp.attendance === 'hadir' ? `Hadir (${rsvp.guestsCount} Pax)` : 'Tidak Hadir'}
+                          <span
+                            className={`px-2 py-0.5 rounded-full font-medium ${
+                              rsvp.attendance === "hadir"
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                                : "bg-red-50 text-red-700 border border-red-100"
+                            }`}
+                          >
+                            {rsvp.attendance === "hadir"
+                              ? `Hadir (${rsvp.guestsCount} Pax)`
+                              : "Tidak Hadir"}
                           </span>
 
-                          <span className={`px-2 py-0.5 rounded-full font-medium ${
-                            rsvp.checkedIn
-                              ? 'bg-amber-50 text-amber-700 border border-amber-100'
-                              : 'bg-stone-100 text-stone-400'
-                          }`}>
-                            {rsvp.checkedIn ? 'Checked-In ✓' : 'Belum Datang'}
+                          <span
+                            className={`px-2 py-0.5 rounded-full font-medium ${
+                              rsvp.checkedIn
+                                ? "bg-amber-50 text-amber-700 border border-amber-100"
+                                : "bg-stone-100 text-stone-400"
+                            }`}
+                          >
+                            {rsvp.checkedIn ? "Checked-In ✓" : "Belum Datang"}
                           </span>
                         </div>
 
-                        {!rsvp.checkedIn && rsvp.attendance === 'hadir' && (
+                        {!rsvp.checkedIn && rsvp.attendance === "hadir" && (
                           <button
                             id={`checkin-guest-btn-${idx}`}
                             onClick={() => handleVerifyCheckIn(rsvp.id!)}

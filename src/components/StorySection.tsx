@@ -79,7 +79,7 @@ export default function StorySection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 2, delay: 0.1 }}
             >
               {/* Date Badge over the line */}
               <div className="bg-theory-red text-white text-[10px] font-mono font-bold tracking-widest uppercase px-4 py-1.5 rounded-full shadow-md z-10">

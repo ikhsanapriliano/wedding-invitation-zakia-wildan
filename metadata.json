@@ -1,6 +1,6 @@
 {
-  "name": "Undangan Pernikahan Wildan & Zakia",
-  "description": "Digital wedding invitation for Wildan & Zakia with interactive countdown, image gallery, background music, real-time RSVP, wishes guestbook, e-wallet gift, QR verifier, and admin dashboard.",
+  "name": "Undangan Pernikahan Zakia & Wildan",
+  "description": "Digital wedding invitation for Zakia & Wildan with interactive countdown, image gallery, background music, real-time RSVP, wishes guestbook, e-wallet gift, QR verifier, and admin dashboard.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

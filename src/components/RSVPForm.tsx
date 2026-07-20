@@ -68,7 +68,7 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
 
       // Automatically trigger WhatsApp share redirect URL
       const waText = encodeURIComponent(
-        `Halo Wildan & Zakia! ✨\n\nSaya *${name.trim()}* mengonfirmasi bahwa saya akan *${
+        `Halo Zakia & Wildan! ✨\n\nSaya *${name.trim()}* mengonfirmasi bahwa saya akan *${
           attendance === "hadir"
             ? `HADIR (Membawa ${guestsCount} Orang)`
             : "TIDAK HADIR"
@@ -95,7 +95,7 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
   const getWaUrl = () => {
     if (!submittedRsvp) return "#";
     const waText = encodeURIComponent(
-      `Halo Wildan & Zakia! ✨\n\nSaya *${submittedRsvp.name}* mengonfirmasi bahwa saya akan *${
+      `Halo Zakia & Wildan! ✨\n\nSaya *${submittedRsvp.name}* mengonfirmasi bahwa saya akan *${
         submittedRsvp.attendance === "hadir"
           ? `HADIR (Membawa ${submittedRsvp.guestsCount} Orang)`
           : "TIDAK HADIR"

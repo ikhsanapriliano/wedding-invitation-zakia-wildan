@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
-import { Heart } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { Heart } from "lucide-react";
 
 export default function LoadingScreen() {
-  const [displayText, setDisplayText] = useState('Mengikat benang merah takdir...');
+  const [displayText, setDisplayText] = useState(
+    "Mengikat benang merah takdir...",
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDisplayText('Menyatukan dua belahan jiwa...');
+      setDisplayText("Menyatukan dua belahan jiwa...");
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -17,7 +19,7 @@ export default function LoadingScreen() {
       id="red-string-loading"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
+      transition={{ duration: 2, ease: "easeInOut" }}
       className="fixed inset-0 z-[100] bg-[#FCFAF6] flex flex-col items-center justify-center p-6 text-center overflow-hidden"
     >
       {/* Decorative Traditional Asian Border Accents */}
@@ -29,7 +31,6 @@ export default function LoadingScreen() {
       </div>
 
       <div className="relative max-w-xs flex flex-col items-center space-y-8">
-        
         {/* Animated Red Thread of Fate SVG */}
         <div className="relative w-48 h-24 flex items-center justify-center">
           <svg
@@ -45,7 +46,7 @@ export default function LoadingScreen() {
               strokeWidth="2"
               strokeLinecap="round"
             />
-            
+
             {/* The animated Red String of Fate */}
             <motion.path
               d="M 10 50 C 40 20, 60 80, 100 50 C 140 20, 160 80, 190 50"
@@ -55,7 +56,7 @@ export default function LoadingScreen() {
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{
-                duration: 1.8,
+                duration: 2,
                 ease: "easeInOut",
               }}
             />
@@ -68,9 +69,9 @@ export default function LoadingScreen() {
               fill="#991b1b"
               initial={{ scale: 0 }}
               animate={{ scale: [1, 1.5, 1] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
+              transition={{ repeat: Infinity, duration: 2 }}
             />
-            
+
             <motion.circle
               cx="190"
               cy="50"
@@ -78,7 +79,7 @@ export default function LoadingScreen() {
               fill="#991b1b"
               initial={{ scale: 0 }}
               animate={{ scale: [1, 1.5, 1] }}
-              transition={{ repeat: Infinity, duration: 1.5, delay: 0.5 }}
+              transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
             />
           </svg>
 
@@ -89,7 +90,7 @@ export default function LoadingScreen() {
             animate={{ scale: 1, rotate: [0, 10, -10, 0] }}
             transition={{
               scale: { type: "spring", stiffness: 200, delay: 0.8 },
-              rotate: { ease: "easeInOut", duration: 1.5, delay: 0.8 }
+              rotate: { ease: "easeInOut", duration: 2, delay: 0.8 },
             }}
           >
             <Heart className="h-5 w-5 text-red-600 fill-red-600 animate-pulse" />
@@ -106,13 +107,13 @@ export default function LoadingScreen() {
           >
             The Red String of Fate
           </motion.span>
-          
+
           <motion.h3
             key={displayText}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 2 }}
             className="font-serif text-base font-medium text-stone-800 tracking-wide"
           >
             {displayText}
@@ -124,7 +125,8 @@ export default function LoadingScreen() {
             transition={{ delay: 0.6 }}
             className="text-[11px] text-stone-400 italic font-sans max-w-[220px] mx-auto leading-relaxed"
           >
-            "Utas merah yang tak terlihat menghubungkan mereka yang ditakdirkan bertemu, tak peduli waktu, tempat, ataupun keadaan."
+            "Utas merah yang tak terlihat menghubungkan mereka yang ditakdirkan
+            bertemu, tak peduli waktu, tempat, ataupun keadaan."
           </motion.p>
         </div>
 
@@ -134,10 +136,9 @@ export default function LoadingScreen() {
             className="absolute left-0 top-0 bottom-0 bg-red-600 rounded-full"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
-            transition={{ duration: 1.8, ease: "easeInOut" }}
+            transition={{ duration: 2, ease: "easeInOut" }}
           />
         </div>
-
       </div>
     </motion.div>
   );

@@ -191,14 +191,22 @@ export default function App() {
                     initial={{ opacity: 1 }}
                     exit={{ y: "-100%", opacity: 0 }}
                     transition={{
-                      duration: 0.95,
+                      duration: 2,
                       ease: [0.43, 0.13, 0.23, 0.96],
                     }}
                     className="absolute inset-0 z-40 flex flex-col items-center justify-between p-8 text-center overflow-hidden"
                   >
                     {/* Responsive background: mobile below md, desktop md and above */}
-                    <div className="absolute inset-0 z-0 bg-cover bg-center block md:hidden" style={{ backgroundImage: "url('/images/mobile-bg.png')" }} />
-                    <div className="absolute inset-0 z-0 bg-cover bg-center hidden md:block" style={{ backgroundImage: "url('/images/depan.jpg')" }} />
+                    <div
+                      className="absolute inset-0 z-0 bg-cover bg-center block md:hidden"
+                      style={{
+                        backgroundImage: "url('/images/mobile-bg.png')",
+                      }}
+                    />
+                    <div
+                      className="absolute inset-0 z-0 bg-cover bg-center hidden md:block"
+                      style={{ backgroundImage: "url('/images/depan.jpg')" }}
+                    />
                     {/* Dark premium overlay for readability & elegant contrast */}
                     <div className="absolute inset-0 bg-stone-950/50 backdrop-blur-[0.5px] pointer-events-none z-0" />
 
@@ -275,7 +283,7 @@ export default function App() {
                   key="main-invitation-scroller"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
+                  transition={{ delay: 0.2, duration: 2 }}
                   className="flex-1 flex flex-col"
                 >
                   {/* Hero / Header Section */}
@@ -354,67 +362,6 @@ export default function App() {
 
                     {/* Mempelai Profiles Grid */}
                     <div className="space-y-12 relative z-10">
-                      {/* Groom */}
-                      <motion.div
-                        id="groom-profile-block"
-                        className="flex flex-col items-center space-y-4"
-                        initial={{ opacity: 0, y: 15 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                      >
-                        {/* Polaroid card framing for Groom profile */}
-                        <motion.div
-                          className="bg-white p-3 pb-6 shadow-lg border border-stone-100 rounded-xl cursor-pointer"
-                          initial={{ rotate: -1.5, scale: 0.95 }}
-                          whileHover={{ scale: 1.03, rotate: 0, y: -5 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 20,
-                          }}
-                        >
-                          <div className="h-56 w-44 overflow-hidden rounded-md bg-stone-50 relative">
-                            <img
-                              src="/images/groom.jpg"
-                              alt="Wildan Mulkan Hakim"
-                              referrerPolicy="no-referrer"
-                              className="h-full w-full object-cover scale-102"
-                            />
-                          </div>
-                          <span className="font-script text-lg text-theory-clay block mt-3">
-                            The Groom
-                          </span>
-                        </motion.div>
-
-                        <div className="space-y-1 max-w-xs">
-                          <h4 className="font-serif text-3xl font-bold text-theory-espresso">
-                            Wildan Mulkan Hakim
-                          </h4>
-                          <p className="text-xs text-theory-clay font-sans font-semibold">
-                            Putra dari Bpk. Ujang Sutisna & Ibu Teti Sugiarti
-                          </p>
-                        </div>
-                      </motion.div>
-
-                      {/* Accent Ampersand tied with a red heart string loop */}
-                      <div className="flex justify-center items-center relative py-2">
-                        <span className="font-script text-5xl text-theory-clay/40 relative z-10">
-                          &
-                        </span>
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          {/* Cute red string infinity symbol */}
-                          <svg
-                            className="w-16 h-8 text-theory-red opacity-60"
-                            viewBox="0 0 100 50"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          >
-                            <path d="M 10,25 C 10,10 40,10 50,25 C 60,40 90,40 90,25 C 90,10 60,10 50,25 C 40,40 10,40 10,25" />
-                          </svg>
-                        </div>
-                      </div>
-
                       {/* Bride */}
                       <motion.div
                         id="bride-profile-block"
@@ -453,6 +400,67 @@ export default function App() {
                           </h4>
                           <p className="text-xs text-theory-clay font-sans font-semibold">
                             Putri dari Bpk. Budi Hadi (Alm) & Ibu Sri Kadarwati
+                          </p>
+                        </div>
+                      </motion.div>
+
+                      {/* Accent Ampersand tied with a red heart string loop */}
+                      <div className="flex justify-center items-center relative py-2">
+                        <span className="font-script text-5xl text-theory-clay/40 relative z-10">
+                          &
+                        </span>
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          {/* Cute red string infinity symbol */}
+                          <svg
+                            className="w-16 h-8 text-theory-red opacity-60"
+                            viewBox="0 0 100 50"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path d="M 10,25 C 10,10 40,10 50,25 C 60,40 90,40 90,25 C 90,10 60,10 50,25 C 40,40 10,40 10,25" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Groom */}
+                      <motion.div
+                        id="groom-profile-block"
+                        className="flex flex-col items-center space-y-4"
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                      >
+                        {/* Polaroid card framing for Groom profile */}
+                        <motion.div
+                          className="bg-white p-3 pb-6 shadow-lg border border-stone-100 rounded-xl cursor-pointer"
+                          initial={{ rotate: -1.5, scale: 0.95 }}
+                          whileHover={{ scale: 1.03, rotate: 0, y: -5 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                          }}
+                        >
+                          <div className="h-56 w-44 overflow-hidden rounded-md bg-stone-50 relative">
+                            <img
+                              src="/images/groom.jpg"
+                              alt="Wildan Mulkan Hakim"
+                              referrerPolicy="no-referrer"
+                              className="h-full w-full object-cover scale-102"
+                            />
+                          </div>
+                          <span className="font-script text-lg text-theory-clay block mt-3">
+                            The Groom
+                          </span>
+                        </motion.div>
+
+                        <div className="space-y-1 max-w-xs">
+                          <h4 className="font-serif text-3xl font-bold text-theory-espresso">
+                            Wildan Mulkan Hakim
+                          </h4>
+                          <p className="text-xs text-theory-clay font-sans font-semibold">
+                            Putra dari Bpk. Ujang Sutisna & Ibu Teti Sugiarti
                           </p>
                         </div>
                       </motion.div>
@@ -625,7 +633,7 @@ export default function App() {
                         Kami Yang Berbahagia,
                       </p>
                       <h4 className="font-serif text-xl text-stone-800 font-bold">
-                        Wildan & Zakia
+                        Zakia & Wildan
                       </h4>
                       <p className="text-[10px] uppercase tracking-widest text-stone-400 font-sans">
                         Beserta Keluarga
@@ -635,7 +643,7 @@ export default function App() {
 
                   {/* Footer */}
                   <div className="bg-stone-900 text-stone-400 py-6 text-center text-[10px] font-sans border-t border-stone-800">
-                    <p>© 2026 Wildan & Zakia. All Rights Reserved.</p>
+                    <p>© 2026 Zakia & Wildan. All Rights Reserved.</p>
                     <p className="text-stone-600 mt-1">
                       Made with elegance and real-time support
                     </p>

@@ -70,7 +70,7 @@ export default function CountdownTimer() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 2 }}
           className="relative w-full max-w-[320px] h-[90px] flex items-center justify-center px-4"
         >
           {/* Hand-drawn double-bordered capsule background SVG */}

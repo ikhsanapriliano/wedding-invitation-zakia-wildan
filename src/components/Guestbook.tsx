@@ -1,38 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { collection, doc, setDoc, query, orderBy, limit, onSnapshot, serverTimestamp } from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from '../firebase';
-import { GuestMessage } from '../types';
-import { Send, MessageSquareHeart, User } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db, handleFirestoreError, OperationType } from "../firebase";
+import { GuestMessage } from "../types";
+import { Send, MessageSquareHeart, User } from "lucide-react";
 
 export default function Guestbook() {
-  const [name, setName] = useState('');
-  const [text, setText] = useState('');
+  const [name, setName] = useState("");
+  const [text, setText] = useState("");
   const [messages, setMessages] = useState<GuestMessage[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const collectionPath = 'messages';
+  const collectionPath = "messages";
 
   useEffect(() => {
     // Real-time synchronization
-    const q = query(collection(db, collectionPath), orderBy('createdAt', 'desc'), limit(50));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const messagesList: GuestMessage[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        messagesList.push({
-          id: doc.id,
-          name: data.name,
-          text: data.text,
-          createdAt: data.createdAt?.toDate() || new Date()
+    const q = query(
+      collection(db, collectionPath),
+      orderBy("createdAt", "desc"),
+      limit(50),
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const messagesList: GuestMessage[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          messagesList.push({
+            id: doc.id,
+            name: data.name,
+            text: data.text,
+            createdAt: data.createdAt?.toDate() || new Date(),
+          });
         });
-      });
-      setMessages(messagesList);
-    }, (error) => {
-      handleFirestoreError(error, OperationType.LIST, collectionPath);
-    });
+        setMessages(messagesList);
+      },
+      (error) => {
+        handleFirestoreError(error, OperationType.LIST, collectionPath);
+      },
+    );
 
     return () => unsubscribe();
   }, []);
@@ -51,22 +68,27 @@ export default function Guestbook() {
     setIsSubmitting(true);
     setErrorMsg(null);
 
-    const messageId = 'msg-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    const messageId =
+      "msg-" + Math.random().toString(36).substring(2, 10).toUpperCase();
 
     try {
       const docRef = doc(db, collectionPath, messageId);
       await setDoc(docRef, {
         name: name.trim(),
         text: text.trim(),
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
       });
 
       // Clear input text (keep name for convenience)
-      setText('');
+      setText("");
     } catch (err) {
       console.error(err);
       setErrorMsg("Gagal mengirim doa. Mohon coba lagi.");
-      handleFirestoreError(err, OperationType.CREATE, `${collectionPath}/${messageId}`);
+      handleFirestoreError(
+        err,
+        OperationType.CREATE,
+        `${collectionPath}/${messageId}`,
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -81,11 +103,15 @@ export default function Guestbook() {
         </h3>
       </div>
       <p className="text-theory-clay font-sans text-xs text-center mb-6 max-w-xs mx-auto tracking-wide leading-relaxed font-semibold">
-        Berikan doa restu dan harapan terbaik Anda untuk mengiringi awal perjalanan kehidupan kami.
+        Berikan doa restu dan harapan terbaik Anda untuk mengiringi awal
+        perjalanan kehidupan kami.
       </p>
 
       {/* Form Submission */}
-      <div id="guestbook-form-box" className="bg-[#FDFBF7] border border-theory-clay/20 rounded-3xl p-4 shadow-sm mb-6">
+      <div
+        id="guestbook-form-box"
+        className="bg-[#FDFBF7] border border-theory-clay/20 rounded-3xl p-4 shadow-sm mb-6"
+      >
         {errorMsg && (
           <div className="mb-3 p-2.5 text-xs bg-red-50 text-theory-red rounded-lg border border-red-100 text-center font-medium">
             {errorMsg}
@@ -128,10 +154,16 @@ export default function Guestbook() {
       </div>
 
       {/* Display Messages */}
-      <div id="guestbook-messages-list" className="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+      <div
+        id="guestbook-messages-list"
+        className="space-y-3 max-h-[350px] overflow-y-auto pr-1"
+      >
         <AnimatePresence initial={false}>
           {messages.length === 0 ? (
-            <div id="guestbook-empty" className="text-center py-6 text-xs text-theory-clay font-sans italic font-semibold">
+            <div
+              id="guestbook-empty"
+              className="text-center py-6 text-xs text-theory-clay font-sans italic font-semibold"
+            >
               Belum ada ucapan doa. Jadilah yang pertama memberikan restu! ✨
             </div>
           ) : (
@@ -142,7 +174,7 @@ export default function Guestbook() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 2 }}
                 className="bg-[#FCFAF6] border border-theory-clay/15 p-4 rounded-2xl flex gap-3 shadow-sm hover:shadow-md transition-all"
               >
                 <div className="flex-shrink-0 h-8 w-8 rounded-full bg-theory-cream flex items-center justify-center text-theory-red border border-theory-clay/10">
@@ -154,11 +186,11 @@ export default function Guestbook() {
                       {msg.name}
                     </span>
                     <span className="text-[9px] text-theory-clay font-sans font-bold">
-                      {new Date(msg.createdAt).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'short',
-                        hour: '2-digit',
-                        minute: '2-digit'
+                      {new Date(msg.createdAt).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
                       })}
                     </span>
                   </div>
