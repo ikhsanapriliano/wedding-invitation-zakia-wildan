@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ZoomIn } from "lucide-react";
@@ -111,7 +113,7 @@ export default function Gallery() {
 
             {/* Custom Polaroid Handwritten Overlay/Label */}
             <div className="mt-4 text-center space-y-1">
-              <span className="font-script text-2xl text-theory-red block leading-none">
+              <span className="font-script text-xl text-theory-red block leading-none">
                 {img.caption}
               </span>
               <span className="font-serif text-xs font-semibold text-theory-espresso tracking-wider block mt-1">

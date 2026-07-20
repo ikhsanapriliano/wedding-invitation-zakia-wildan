@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db, handleFirestoreError, OperationType } from "../firebase";
+import { getSupabase } from "@/lib/supabase";
 import {
   CheckCircle,
   Calendar,
@@ -9,7 +10,6 @@ import {
   ArrowRight,
   Share2,
 } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
 
 interface RSVPFormProps {
   guestNameFromUrl: string;
@@ -40,52 +40,30 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
     setIsSubmitting(true);
     setErrorMsg(null);
 
-    // Generate a secure, beautiful custom RSVP ID
     const customId =
       "rsvp-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-    const pathForWrite = `rsvps`;
 
     const rsvpData = {
+      id: customId,
       name: name.trim(),
       attendance,
-      guestsCount: attendance === "hadir" ? Number(guestsCount) : 0,
-      phoneNumber: phoneNumber.trim(),
-      createdAt: serverTimestamp(),
-      checkedIn: false,
-      checkInTime: null,
+      guests_count: attendance === "hadir" ? Number(guestsCount) : 0,
+      phone_number: phoneNumber.trim(),
+      created_at: new Date().toISOString(),
+      checked_in: false,
+      check_in_time: null,
     };
 
     try {
-      // Direct setDoc for strict validation
-      const docRef = doc(db, pathForWrite, customId);
-      await setDoc(docRef, rsvpData);
+      const { error } = await getSupabase().from("rsvps").insert(rsvpData);
 
-      setSubmittedRsvp({
-        id: customId,
-        ...rsvpData,
-        createdAt: new Date(),
-      });
+      if (error) throw error;
 
-      // Automatically trigger WhatsApp share redirect URL
-      const waText = encodeURIComponent(
-        `Halo Zakia & Wildan! ✨\n\nSaya *${name.trim()}* mengonfirmasi bahwa saya akan *${
-          attendance === "hadir"
-            ? `HADIR (Membawa ${guestsCount} Orang)`
-            : "TIDAK HADIR"
-        }* di acara pernikahan bahagia kalian.\n\nID RSVP saya: *${customId}*\n\nTerima kasih, sampai jumpa di Kampung Bareto! 🌸`,
-      );
-
-      // Keep WA URL ready for user to click
-      const waUrl = `https://api.whatsapp.com/send?phone=${phoneNumber.trim().replace(/[^0-9]/g, "") || "628123456789"}&text=${waText}`;
+      setSubmittedRsvp(rsvpData);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       setErrorMsg(
         "Gagal menyimpan RSVP. Pastikan koneksi internet Anda stabil.",
-      );
-      handleFirestoreError(
-        err,
-        OperationType.CREATE,
-        `${pathForWrite}/${customId}`,
       );
     } finally {
       setIsSubmitting(false);
@@ -97,7 +75,7 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
     const waText = encodeURIComponent(
       `Halo Zakia & Wildan! ✨\n\nSaya *${submittedRsvp.name}* mengonfirmasi bahwa saya akan *${
         submittedRsvp.attendance === "hadir"
-          ? `HADIR (Membawa ${submittedRsvp.guestsCount} Orang)`
+          ? `HADIR (Membawa ${submittedRsvp.guests_count} Orang)`
           : "TIDAK HADIR"
       }* di acara pernikahan bahagia kalian.\n\nID RSVP saya: *${submittedRsvp.id}*\n\nSampai jumpa di Kampung Bareto! 🌸`,
     );
@@ -109,7 +87,6 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
       id="rsvp-root"
       className="px-5 py-8 bg-[#FDFBF7] rounded-3xl border border-theory-clay/20 shadow-sm mx-4 relative overflow-hidden"
     >
-      {/* Decorative Red String loop in top corner of RSVP Form */}
       <div className="absolute -top-4 -left-4 w-16 h-16 pointer-events-none opacity-20">
         <svg
           viewBox="0 0 100 100"
@@ -269,7 +246,6 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
               </p>
             </div>
 
-            {/* WhatsApp Direct Action Button */}
             <div className="pt-2">
               <a
                 id="rsvp-wa-share-btn"

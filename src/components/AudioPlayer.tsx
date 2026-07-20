@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX, Music } from "lucide-react";
 import { motion } from "motion/react";
@@ -46,7 +48,7 @@ export default function AudioPlayer({ playOnStart }: AudioPlayerProps) {
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
-        .catch((err) => console.error("Error playing audio:", err));
+        .catch((err) => console.log("Error playing audio:", err));
     }
   };
 

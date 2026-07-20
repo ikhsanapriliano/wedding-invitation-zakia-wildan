@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  collection,
-  doc,
-  setDoc,
-  query,
-  orderBy,
-  limit,
-  onSnapshot,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db, handleFirestoreError, OperationType } from "../firebase";
-import { GuestMessage } from "../types";
+import { getSupabase } from "@/lib/supabase";
+import { GuestMessage } from "@/types";
 import { Send, MessageSquareHeart, User } from "lucide-react";
 
 export default function Guestbook() {
@@ -21,37 +13,54 @@ export default function Guestbook() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const collectionPath = "messages";
-
   useEffect(() => {
-    // Real-time synchronization
-    const q = query(
-      collection(db, collectionPath),
-      orderBy("createdAt", "desc"),
-      limit(50),
-    );
+    const fetchMessages = async () => {
+      const { data, error } = await getSupabase()
+        .from("messages")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
 
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const messagesList: GuestMessage[] = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          messagesList.push({
-            id: doc.id,
-            name: data.name,
-            text: data.text,
-            createdAt: data.createdAt?.toDate() || new Date(),
-          });
-        });
-        setMessages(messagesList);
-      },
-      (error) => {
-        handleFirestoreError(error, OperationType.LIST, collectionPath);
-      },
-    );
+      if (error) {
+        console.log(error);
+        return;
+      }
 
-    return () => unsubscribe();
+      setMessages(
+        (data || []).map((msg: any) => ({
+          id: msg.id,
+          name: msg.name,
+          text: msg.text,
+          createdAt: msg.created_at,
+        })),
+      );
+    };
+
+    fetchMessages();
+
+    const channel = getSupabase()
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          const newMsg = payload.new as any;
+          setMessages((prev) => [
+            {
+              id: newMsg.id,
+              name: newMsg.name,
+              text: newMsg.text,
+              createdAt: newMsg.created_at,
+            },
+            ...prev,
+          ]);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      getSupabase().removeChannel(channel);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,23 +81,19 @@ export default function Guestbook() {
       "msg-" + Math.random().toString(36).substring(2, 10).toUpperCase();
 
     try {
-      const docRef = doc(db, collectionPath, messageId);
-      await setDoc(docRef, {
+      const { error } = await getSupabase().from("messages").insert({
+        id: messageId,
         name: name.trim(),
         text: text.trim(),
-        createdAt: serverTimestamp(),
+        created_at: new Date().toISOString(),
       });
 
-      // Clear input text (keep name for convenience)
+      if (error) throw error;
+
       setText("");
     } catch (err) {
-      console.error(err);
+      console.log(err);
       setErrorMsg("Gagal mengirim doa. Mohon coba lagi.");
-      handleFirestoreError(
-        err,
-        OperationType.CREATE,
-        `${collectionPath}/${messageId}`,
-      );
     } finally {
       setIsSubmitting(false);
     }
@@ -107,7 +112,6 @@ export default function Guestbook() {
         perjalanan kehidupan kami.
       </p>
 
-      {/* Form Submission */}
       <div
         id="guestbook-form-box"
         className="bg-[#FDFBF7] border border-theory-clay/20 rounded-3xl p-4 shadow-sm mb-6"
@@ -153,7 +157,6 @@ export default function Guestbook() {
         </form>
       </div>
 
-      {/* Display Messages */}
       <div
         id="guestbook-messages-list"
         className="space-y-3 max-h-[350px] overflow-y-auto pr-1"

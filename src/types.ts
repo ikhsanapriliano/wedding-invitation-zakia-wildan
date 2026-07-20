@@ -4,14 +4,23 @@ export interface RSVP {
   attendance: 'hadir' | 'tidak_hadir';
   guestsCount: number;
   phoneNumber: string;
-  createdAt: any; // Firestore Timestamp
+  createdAt: string;
   checkedIn?: boolean;
-  checkInTime?: any; // Firestore Timestamp
+  checkInTime?: string;
+  waSent?: boolean;
+  waSentCount?: number;
 }
 
 export interface GuestMessage {
   id?: string;
   name: string;
   text: string;
-  createdAt: any; // Firestore Timestamp
+  createdAt: string;
+}
+
+export interface VisitorStats {
+  total: number;
+  today: number;
+  thisWeek: number;
+  thisMonth: number;
 }
