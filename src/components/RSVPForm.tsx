@@ -246,24 +246,6 @@ export default function RSVPForm({
                 buku tamu digital real-time kami.
               </p>
             </div>
-
-            <div className="pt-2">
-              <a
-                id="rsvp-wa-share-btn"
-                href={getWaUrl()}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold uppercase tracking-widest py-3 px-6 rounded-xl shadow-md transition-all"
-              >
-                <Share2 className="h-4 w-4 text-white" />
-                Kirim Notifikasi WhatsApp
-              </a>
-              <p className="text-[9px] text-theory-clay/80 font-sans mt-2.5 leading-relaxed font-semibold">
-                *Klik tombol di atas untuk mengirimkan konfirmasi kehadiran
-                real-time ini ke kontak WhatsApp Anda / Mempelai secara
-                otomatis.
-              </p>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

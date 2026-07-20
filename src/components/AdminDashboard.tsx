@@ -269,7 +269,7 @@ export default function AdminDashboard() {
 
   const handleSendWa = async (rsvp: RSVP) => {
     const waText = encodeURIComponent(
-      `Kepada Yth.\nBapak/Ibu/Saudara/i\n${rsvp.name}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami.\n\nBerikut link undangan kami, untuk info lengkap dari acara, bisa kunjungi :\n\nhttps://wedding-invitation-zakia-wildan.vercel.app?to=${encodeURIComponent(rsvp.name)}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nMohon maaf perihal undangan hanya di bagikan melalui pesan ini.\n\nTerima Kasih\n\nHormat kami,\nZakia & Wildan`,
+      `Kepada Yth.\nBapak/Ibu/Saudara/i\n${rsvp.name}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami.\n\nBerikut link undangan kami, untuk info lengkap dari acara, bisa kunjungi :\n\nhttps://wedding-invitation-zakia-wildan.vercel.app?to=${encodeURIComponent(rsvp.name)}&phone=${encodeURIComponent(rsvp.phoneNumber)}&id=${encodeURIComponent(rsvp?.id || "")}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nMohon maaf perihal undangan hanya di bagikan melalui pesan ini.\n\nTerima Kasih\n\nHormat kami,\nZakia & Wildan`,
     );
     let phone = rsvp.phoneNumber.replace(/[^0-9]/g, "");
     if (phone.startsWith("0")) phone = "62" + phone.slice(1);
@@ -330,7 +330,7 @@ export default function AdminDashboard() {
               </div>
             )}
 
-              <form onSubmit={handlePasscodeLogin} className="space-y-4">
+            <form onSubmit={handlePasscodeLogin} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Kode Akses
