@@ -43,6 +43,7 @@ export default function RSVPForm({ guestNameFromUrl }: RSVPFormProps) {
       name: name.trim(),
       attendance,
       guests_count: attendance === "hadir" ? Number(guestsCount) : 0,
+      phone_number: "-",
       created_at: new Date().toISOString(),
       checked_in: false,
       check_in_time: null,

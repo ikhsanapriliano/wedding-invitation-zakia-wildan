@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     locale: "id_ID",
     images: [
       {
-        url: "https://wedding-invitation-zakia-wildan.vercel.app/images/depan.jpg",
+        url: "https://wedding-invitation-zakia-wildan.vercel.app/images/og-image.png",
         width: 1200,
         height: 630,
         alt: "Zakia & Wildan Wedding Invitation",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "Wedding Invitation Zakia & Wildan",
     description: "Undangan Pernikahan Zakia & Wildan — 1 Agustus 2026",
     images: [
-      "https://wedding-invitation-zakia-wildan.vercel.app/images/depan.jpg",
+      "https://wedding-invitation-zakia-wildan.vercel.app/images/og-image.png",
     ],
   },
 };
